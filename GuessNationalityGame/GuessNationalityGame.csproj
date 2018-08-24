@@ -93,6 +93,12 @@
     <Content Include="Content\Site.css" />
     <Content Include="fonts\glyphicons-halflings-regular.svg" />
     <Content Include="Global.asax" />
+    <Content Include="Scripts\App\App.js" />
+    <Content Include="Scripts\App\Business\ScoreManager.js" />
+    <Content Include="Scripts\App\Model\Image.js" />
+    <Content Include="Scripts\App\Model\Nationality.js" />
+    <Content Include="Scripts\App\Model\Question.js" />
+    <Content Include="Scripts\App\Service\ImageService.js" />
     <Content Include="Scripts\bootstrap.js" />
     <Content Include="Scripts\bootstrap.min.js" />
     <None Include="Scripts\jquery-1.10.2.intellisense.js" />
