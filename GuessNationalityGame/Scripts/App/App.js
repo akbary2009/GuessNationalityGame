@@ -34,9 +34,10 @@ class App {
 
     showNext() {
         var image = this.getNextImage();
+        this.showScore();
         if (image == null) {
             // game is finished
-            this.changePage('.finish');
+            this.showScorePage();
         }
         else {
             this.renderImage(image);
@@ -48,20 +49,26 @@ class App {
         if (!image) return;
 
         var imageTag = $('<img/>', {
-            class: 'img img-circle img-responsive question',
+            class: 'img img-rounded img-responsive question',
             src: image.url,
-        }).data('id', image.id);
-        $('body').prepend(imageTag);
+        })
+            .data('id', image.id)
+            .prependTo('.question-container');
         $('.question')
             .fadeOut(duration, e => {
                 $('.question').remove();
                 this.answer(image.id, null)
             })
-            .animate({ 'top': '100%' }, { duration: duration, queue: false });
+            .animate({ 'top': '60%' }, { duration: duration, queue: false });
     }
 
-    changePage(activePage) {
-        alert(this.scoreManager.getScore());
+    showScorePage() {
+        $('.game-page').addClass('hidden');
+        $('.score-page').removeClass('hidden')
+    }
+    showScore() {
+        var finalScore = this.scoreManager.getScore();
+        $('.score').text(`Score: ${finalScore}`);
     }
 
     getNextImage() {

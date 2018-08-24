@@ -8,7 +8,34 @@
     <script src="~/Scripts/App/App.js" type="module"></script>
 }
 
+<div class="game-page text-center">
+    @* TODO: show their flags inside the selection boxes *@
+    <div class="row navbar-fixed-top">
+        <div class="col-xs-1 pull-left answer-box">Japanese</div>
+        <div class="col-xs-10">
+            <div class="question-container col-xs-2 col-sm-offset-5"></div>
+        </div>
+        <div class="col-xs-1 pull-right answer-box">Chinese</div>
+    </div>
+    <div class="row navbar-fixed-bottom">
+        <div class="col-xs-1 pull-left answer-box">Korean</div>
+        <div class="col-xs-10">
+            <h4 class="score"></h4>
+        </div>
+        <div class="col-xs-1 pull-right answer-box">Thai</div>
+    </div>
+</div>
 
-<script>
-    
-</script>
+
+<div class="score-page row hidden">
+    <div class="col-xs-3 text-center col-sm-offset-3 ">
+        <h4 class="score"></h4>
+    </div>
+    <div class="col-xs-3">
+        @* TODO: Restart game without refreshing the page *@
+        <a class="btn btn-primary" title="Play again" href="/">
+            <i class="glyphicon glyphicon-refresh"></i>
+            Restart
+        </a>
+    </div>
+</div>

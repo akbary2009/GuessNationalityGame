@@ -17,7 +17,18 @@ textarea {
 }
 
 .question {
-    width: 50px;
-    height: 50px;
-    position: absolute;
+    width: 200px;
+    height: 200px;
+    position: fixed;
+}
+
+.answer-box {
+    background-color: #999999;
+    height: 100px;
+    padding-top: 3%;
+    vertical-align: middle;
+}
+
+.score-page {
+    padding-top: 15%;
 }
