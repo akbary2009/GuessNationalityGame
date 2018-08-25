@@ -1,1 +1,1 @@
-﻿export const Nationality = Object.freeze({    Japanese: "japanese",    Chinese: "chinese",    Korean: "korean",    Thai: "thai"});
+﻿export const Nationality = Object.freeze({    Japanese: "Japanese",    Chinese: "Chinese",    Korean: "Korean",    Thai: "Thai",});

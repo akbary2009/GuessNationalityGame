@@ -16,6 +16,7 @@ class App {
         this.shuffleArray(images);
         this.questions = images.map(image => new Question(image));
 
+        $('body').on('dragover', e => this.onDragover(e));
         this.showNext();
     }
 
@@ -29,7 +30,7 @@ class App {
         else
             this.scoreManager.wrongAnswer();
 
-        this.showNext(); //?
+        this.showNext();
     }
 
     showNext() {
@@ -40,6 +41,7 @@ class App {
             this.showScorePage();
         }
         else {
+            this.showStatus();
             this.renderImage(image);
         }
     }
@@ -51,15 +53,21 @@ class App {
         var imageTag = $('<img/>', {
             class: 'img img-rounded img-responsive question',
             src: image.url,
+            draggable: 'true',
         })
             .data('id', image.id)
             .prependTo('.question-container');
+
         $('.question')
-            .fadeOut(duration, e => {
+            .animate({ 'top': '60%' }, duration, e => {
                 $('.question').remove();
                 this.answer(image.id, null)
             })
-            .animate({ 'top': '60%' }, { duration: duration, queue: false });
+            .on('dragstart', e => {
+                var event = e.originalEvent;
+                var offset_data = event.clientX + ',' + event.clientY;
+                this.offset_data = offset_data;
+            });
     }
 
     showScorePage() {
@@ -69,6 +77,10 @@ class App {
     showScore() {
         var finalScore = this.scoreManager.getScore();
         $('.score').text(`Score: ${finalScore}`);
+    }
+    showStatus() {
+        var currentIndex = this.questions.filter(q => q.isShown).length;
+        $('.status').text(`${currentIndex}/${this.questions.length}`);
     }
 
     getNextImage() {
@@ -83,6 +95,54 @@ class App {
 
     shuffleArray(array) {
         for (let i = array.length - 1; i > 0; i--) {            const j = Math.floor(Math.random() * (i + 1));            [array[i], array[j]] = [array[j], array[i]];        }
+    }
+
+    onDragover(e) {
+        if (!this.offset_data) return;
+
+        const animationDuration = 500;
+        const dragOffset = 20;
+        var oe = e.originalEvent;
+        var offset = this.offset_data.split(',');
+        var offsetX = oe.clientX - parseInt(offset[0], 10);
+        var offsetY = oe.clientY - parseInt(offset[1], 10);
+
+        if (Math.abs(offsetX) >= dragOffset || Math.abs(offsetY) >= dragOffset) {
+
+            var image = $('.question');
+            var imageId = image.data('id');
+
+            var screenCenterX = window.screen.width / 2;
+            var screenCenterY = window.screen.height / 2;
+            var isOnTopPart = oe.clientY < screenCenterY;
+            var isOnLeftPart = oe.clientX < screenCenterX;
+
+            var top = 0;
+            var left = 0;
+            var answer = null;
+
+            if (!isOnTopPart)
+                top = window.screen.height - parseInt(image.css('height'));
+            if (!isOnLeftPart)
+                left = window.screen.width - parseInt(image.css('width'));
+
+            if (isOnTopPart && isOnLeftPart)
+                answer = Nationality.Japanese;
+            else if (isOnTopPart && !isOnLeftPart)
+                answer = Nationality.Chinese;
+            else if (!isOnTopPart && isOnLeftPart)
+                answer = Nationality.Korean;
+            else if (!isOnTopPart && !isOnLeftPart)
+                answer = Nationality.Thai;
+            if (!answer) return;
+
+            image.stop()
+                .fadeOut(animationDuration, e => {
+                    $('.question').remove();
+                    this.answer(imageId, answer);
+                })
+                .animate({ 'top': top + 'px', 'left': left + 'px' }, { duration: animationDuration, queue: false });
+        }
     }
 };
 
